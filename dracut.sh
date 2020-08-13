@@ -243,6 +243,7 @@ Creates initial ramdisk images for preloading modules
   --regenerate-all      Regenerate all initramfs images at the default location
                         for the kernel versions found on the system
   --version             Display version
+  -g, --source-hash     Install file with list of all files and coresponding hashes
 
 If [LIST] has multiple arguments, then you have to put these in quotes.
 
@@ -336,7 +337,7 @@ rearrange_params()
     set -- "${newat[@]}" # Set new $@
 
     TEMP=$(unset POSIXLY_CORRECT; getopt \
-        -o "a:m:o:d:I:k:c:r:L:fvqlHhMN" \
+        -o "a:m:o:d:I:k:c:r:L:fgvqlHhMN" \
         --long kver: \
         --long add: \
         --long force-add: \
@@ -426,6 +427,7 @@ rearrange_params()
         --long hostonly-i18n \
         --long no-machineid \
         --long version \
+        --long source-hash \
         -- "$@")
 
     if (( $? != 0 )); then
@@ -549,6 +551,8 @@ while :; do
                        shift
                        ;;
         -f|--force)    force=yes;;
+        -g|--source-hash)
+                       sourcehash=yes;;
         --kernel-only) kernel_only="yes"; no_kernel="no";;
         --no-kernel)   kernel_only="no"; no_kernel="yes";;
         --print-cmdline)
